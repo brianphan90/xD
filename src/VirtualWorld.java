@@ -252,7 +252,7 @@ public void setup()
               //.collect(Collectors.toList());
               .forEach(p -> {world.removeEntityAt(p);
                  scheduler.unscheduleAllEvents(world.getOccupancyCell(p));
-                 OreBlob blb = new OreBlob("blob",p, imageStore.getImageList("blob"),0,0);
+                 MinerNotFull blb = new MinerNotFull("rah",p, imageStore.getImageList("rah"),0,0, 0, 0);
                  world.addEntity(blb);
                  blb.scheduleActions(scheduler, world, imageStore);});
    }

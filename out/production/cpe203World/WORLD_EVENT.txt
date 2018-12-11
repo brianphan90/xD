@@ -9,11 +9,13 @@ CPE 203
     - a dog (Goodboi.java) will spawn in the middle of a field of flowers shaped in "XD"
 
 3. What should the affected entities do:
-    - The affected entities will explode(Fire.java) and disappear off the world
+    - Any obstacles surrounding the original flower spawn will turn into a flame that runs around eating ore
+    - Any oreblobs that come into contact with the dog will be exploded and removed from the world
 
 4. What the new entity is and how it should behave:
-    - the dog that spawns will run around chasing ore blobs and obstacles,
+    - the dog that spawns will run around chasing ore blobs,
     and it will explode them upon contact and erase them from the world
+    - obstacles surrounding the flower spawn will turn into moving flames that eat ore
 
 5. Kelly Wong - created triggering of event + entity spawn + images editing/insertion
    Brian Phan - created new entities + actions of new entities on world
