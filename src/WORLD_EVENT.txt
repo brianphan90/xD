@@ -1,0 +1,20 @@
+Kelly Wong (partnered with Brian Phan)
+CPE 203
+
+
+1. How to trigger the event:
+    - click mouse on any spot in the world
+
+2. What should happen when the event is triggered:
+    - a dog (Goodboi.java) will spawn in the middle of a field of flowers shaped in "XD"
+
+3. What should the affected entities do:
+    - The affected entities will explode(Fire.java) and disappear off the world
+
+4. What the new entity is and how it should behave:
+    - the dog that spawns will run around chasing ore blobs,
+    and it will explode them upon contact and erase them from the world
+
+5. Kelly Wong - created triggering of event + entity spawn + images editing/insertion
+   Brian Phan - created new entities + actions of new entities on world
+

@@ -1,8 +1,14 @@
-
+import java.util.function.*;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 import processing.core.*;
+import java.util.function.Function;
+import java.util.stream.*;
+import java.util.stream.Collectors.*;
+
 
 public final class VirtualWorld
    extends PApplet
@@ -186,30 +192,78 @@ public void setup()
       parseCommandLine(args);
       PApplet.main(VirtualWorld.class);
    }
-
    public void mouseClicked()
    {
-      Point pressed = mouseToPoint(mouseY, mouseX);
-
+      Point pressed = mouseToPoint(mouseX, mouseY);
+      List<Point> gang = new ArrayList<>();
+      gang.add(pressed);
+      gang.add(new Point(pressed.x + 1, pressed.y + 1));
+      gang.add(new Point(pressed.x - 1, pressed.y + 1));
+      gang.add(new Point(pressed.x + 1, pressed.y - 1));
+      gang.add(new Point(pressed.x - 1 , pressed.y - 1));
+      gang.add(new Point(pressed.x + 3 , pressed.y));
+      gang.add(new Point(pressed.x + 3, pressed.y + 1));
+      gang.add(new Point(pressed.x + 3, pressed.y - 1));
+      gang.add(new Point(pressed.x + 4, pressed.y - 1));
+      gang.add(new Point(pressed.x + 4, pressed.y + 1));
+      gang.add(new Point(pressed.x + 5, pressed.y ));
       Background obs = new Background("flower", imageStore.getImageList("flower"));
 
 
-      world.setBackgroundCell(pressed, obs);
-      world.setBackgroundCell(new Point(pressed.x + 1, pressed.y + 1),obs);
-      world.setBackgroundCell(new Point(pressed.x - 1, pressed.y + 1),obs);
-      world.setBackgroundCell(new Point(pressed.x + 1, pressed.y - 1),obs);
-      world.setBackgroundCell(new Point(pressed.x - 1, pressed.y - 1),obs);
-      world.setBackgroundCell(new Point(pressed.x + 3, pressed.y),obs);
-      world.setBackgroundCell(new Point(pressed.x + 3, pressed.y + 1),obs);
-      world.setBackgroundCell(new Point(pressed.x + 3, pressed.y - 1),obs);
-      world.setBackgroundCell(new Point(pressed.x + 4, pressed.y - 1),obs);
-      world.setBackgroundCell(new Point(pressed.x + 4, pressed.y + 1),obs);
-      world.setBackgroundCell(new Point(pressed.x + 5, pressed.y ),obs);
+      for(Point pt : gang){
+         if(world.withinBounds(pt)){
+            if(pt == pressed) {
+               world.setBackground(pressed, obs);
+               Goodboi bird = new Goodboi("goodboi" + Goodboi.Goodboi_ID_SUFFIX,
+                       pressed, 0,
+                       ParseStuff.BLOB_ANIMATION_MIN +
+                               ParseStuff.rand.nextInt(Goodboi.Goodboi_ANIMATION_MAX - Goodboi.Goodboi_ANIMATION_MIN),
+                       imageStore.getImageList(Goodboi.Goodboi_KEY));
+
+               world.addEntity(bird);
+               bird.scheduleActions(scheduler, world, imageStore);
+            }
+            world.setBackground(pt, obs);
+         }
+      }
+      Predicate<Point> isObstacle = p -> world.getOccupancyCell(p) instanceof Obstacle
+              || world.getOccupancyCell(p) instanceof Blacksmith;
+      //check if obstacle
+
+      Function<Point, Stream<Point>> around =
+              point ->
+                      Stream.<Point>builder()
+                              .add(new Point(point.x -2, point.y ))
+                              .add(new Point(point.x - 2, point.y + 1 ))
+                              .add(new Point(point.x - 2, point.y - 1 ))
+                              .add(new Point(point.x + 2, point.y))
+                              .add(new Point(point.x + 2, point.y - 1))
+                              .add(new Point(point.x + 2, point.y + 1))
+                              .add(new Point(point.x, point.y + 2))
+                              .add(new Point(point.x + 1, point.y + 2))
+                              .add(new Point(point.x - 1, point.y + 2))
+                              .add(new Point(point.x, point.y - 2))
+                              .add(new Point(point.x + 1, point.y - 2))
+                              .add(new Point(point.x - 1, point.y - 2))
+                              .build();
+      around.apply(pressed)
+              .filter(p -> world.withinBounds(p))
+              .filter(isObstacle)
+              //.collect(Collectors.toList());
+              .forEach(p -> {world.removeEntityAt(p);
+                 scheduler.unscheduleAllEvents(world.getOccupancyCell(p));
+                 OreBlob blb = new OreBlob("blob",p, imageStore.getImageList("blob"),0,0);
+                 world.addEntity(blb);
+                 blb.scheduleActions(scheduler, world, imageStore);});
    }
+
+
+
+
 
    private Point mouseToPoint(int x, int y)
    {
-      return view.getViewport().viewportToWorld(y/view.getTileHeight(),x/view.getTileWidth());
+      return view.getViewport().viewportToWorld(x/TILE_HEIGHT,y/TILE_WIDTH);
    }
 }
 

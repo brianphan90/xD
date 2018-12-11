@@ -29,4 +29,21 @@ rocks images/rock.bmp
 vein images/vein.bmp
 background_default images/none.bmp
 flower images/flowerxD.bmp
-
+goodboi images/goodboi1.bmp 255 255 255 0
+goodboi images/goodboi2.bmp 255 255 255 0
+goodboi images/goodboi3.bmp 255 255 255 0
+goodboi images/goodboi4.bmp 255 255 255 0
+goodboi images/goodboi5.bmp 255 255 255 0
+goodboi images/goodboi6.bmp 255 255 255 0
+goodboi images/goodboi7.bmp 255 255 255 0
+goodboi images/goodboi8.bmp 255 255 255 0
+goodboi images/goodboi9.bmp 255 255 255 0
+goodboi images/goodboi10.bmp 255 255 255 0
+fire images/fire1.bmp 255 255 255 0
+fire images/fire2.bmp 255 255 255 0
+fire images/fire3.bmp 255 255 255 0
+fire images/fire4.bmp 255 255 255 0
+fire images/fire5.bmp 255 255 255 0
+fire images/fire6.bmp 255 255 255 0
+fire images/fire7.bmp 255 255 255 0
+fire images/fire8.bmp 255 255 255 0
